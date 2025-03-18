@@ -1,9 +1,13 @@
 const request = require('supertest');
-const app = require('../server'); // Import your Express app
+const app = require('../server'); // Import the Express app
 const mongoose = require('mongoose');
 require('dotenv').config();
 
-// Close database connection after tests
+beforeAll(async () => {
+    // Use a test database to avoid messing with real data
+    process.env.MONGO_URI = 'mongodb://localhost:27017/testdb';
+});
+
 afterAll(async () => {
     await mongoose.connection.close();
 });
@@ -19,7 +23,7 @@ describe('Event Management', () => {
                 description: 'Automated Test Event',
                 date: '2025-03-20T10:00:00',
                 category: 'Meetings',
-                email: 'i222414@nu.edu.pk'
+                email: 'test@example.com'
             });
 
         expect(res.statusCode).toBe(200);

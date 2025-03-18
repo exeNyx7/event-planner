@@ -24,4 +24,15 @@ router.post('/create', async (req, res) => {
     }
 });
 
+
+// Get all upcoming events
+router.get('/upcoming', async (req, res) => {
+    try {
+        const events = await Event.find().sort({ date: 1 }); // Sort by date
+        res.json(events);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching events', error: error.message });
+    }
+});
+
 module.exports = router;
